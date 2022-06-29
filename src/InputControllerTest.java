@@ -91,7 +91,6 @@ class InputControllerTest {
                 Valid = true;
             }
         }
-        assertTrue(true);
     }
     @Test
     void getNo() {
@@ -106,7 +105,6 @@ class InputControllerTest {
                 Valid = true;
             }
         }
-        assertTrue(true);
     }
     @Test
     void getOther() {
