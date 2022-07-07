@@ -1,5 +1,8 @@
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.stream.Collectors;
 
 /**
  * Class that handles all displays for the console
@@ -7,7 +10,9 @@ import java.util.HashSet;
  * @author Cole Glass
  */
 public class DisplayController {
-    final String word;
+    private final String word;
+    private final String artPath = "src/Art.txt";
+    String[] artArray = new String[4];
     public DisplayController(Word word) {
         this.word = word.getWord();
     }
@@ -16,52 +21,51 @@ public class DisplayController {
      * Displays the name of the game
      */
     public void introDisplay(){
-        System.out.println("HANGMAN");
+        System.out.println("   HANGMAN");
     }
 
     /**
      * Main display which is shown every round
      */
     public void mainDisplay(HashSet<String> guesses, ArrayList<String> wrongGuesses){
-        System.out.println("+---+");
-        if(wrongGuesses.size() > 0)System.out.println("O  |");else System.out.println("   |");
-        if(wrongGuesses.size() > 1)System.out.println("|  |");else System.out.println("   |");
-        if(wrongGuesses.size() > 2)System.out.println("|  |");else System.out.println("   |");
-        System.out.println("  ===");
-        if(wrongGuesses.size() > 0) System.out.println("Missed Letters: " + wrongGuessDisplay(wrongGuesses));
-        else System.out.println("Missed Letters: ");
-        wordDisplay(guesses);
+        try {
+                String artStream = Files.readString(Path.of(artPath));
+                artArray = artStream.split("\n\r");
+            if (wrongGuesses.size() == 0) System.out.println(artArray[0]);
+            else if (wrongGuesses.size() == 1) System.out.println(artArray[1]);
+            else if (wrongGuesses.size() == 2) System.out.println(artArray[2]);
+            else if (wrongGuesses.size() == 3) System.out.println(artArray[3]);
+            if (wrongGuesses.size() > 0) System.out.println("Missed Letters: " +
+                    String.join("", wrongGuesses));
+            else System.out.println("Missed Letters: ");
+            wordDisplay(guesses);
+        }catch(Exception e){System.out.println("No such file found");}
     }
 
     /**
-     * Returns a string of all incorrect guesses so far
-     *
-     * @return guesses : String
+     * Displays the word as it has been guessed so far by the user
      */
-    public String wrongGuessDisplay(ArrayList<String> wrongGuesses){
-        String guesses = "";
-        for (String letter:wrongGuesses) {
-            guesses += letter;
-        }
-        return guesses;
-    }
-
-    /**
-     * Displays the word as it has een guesses so far by the user
-     */
-    public void wordDisplay(HashSet<String> guesses){
-        for (int i = 0; i < word.length(); i++) {
-            if(guesses.contains(String.valueOf(word.charAt(i))))System.out.print(word.charAt(i));
-            else System.out.print("_");
-        }
+    public String wordDisplay(HashSet<String> guesses){
+        ArrayList wordList = (ArrayList) word.chars()
+                .mapToObj(e -> String.valueOf((char) e))
+                        .collect(Collectors.toList());
+       String display = (String) wordList.stream()
+                .map(e -> {
+                    if(guesses.contains(String.valueOf(e)))return String.valueOf(e);
+                    return ("_");
+                })
+               .collect(Collectors.joining());
+       System.out.println(display);
         //add a line of space for formatting
         System.out.println();
+        //for use if you want it (i.e. for unit testing)
+        return display;
     }
 
     /**
      * Display for game lost condition
      */
-    public void defeatDispay(){
+    public void defeatDisplay(){
         System.out.println("Sorry! That's too many guesses. The secret word was " + word);
     }
 

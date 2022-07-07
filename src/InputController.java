@@ -15,20 +15,30 @@ public class InputController {
      * @return choice : String
      */
     public String getUserChoice() {
-        boolean Valid = false;
-        String choice = "";
-        try{;
-            while(choice.length() > 1 || Valid == false){
-                if(choice.length() > 0)  System.out.println("Sorry please choose only one letter character");
-                System.out.println("Guess a letter: ");
-                choice = input.nextLine();
-                if(choice.matches("[a-zA-Z]")) Valid = true;
+        try {
+            System.out.println("Guess a letter: ");
+            String choice = input.nextLine();
+            if (choice.length() > 1) {
+                System.out.println("Sorry please choose only one letter character");
+                return getUserChoice();
             }
-        }catch(Exception e){
-    System.out.println("Error try again: ");
-    getUserChoice();
-}
-        return choice;
+            if (choice.matches("[a-zA-Z]")) return choice;
+            else {
+                System.out.println("Please only choose a letter: ");
+                return getUserChoice();
+            }
+        }catch (Exception e){System.out.println("Invalid input"); return getUserChoice();}
+    }
+
+    /**
+     * Gets the name of the user from user input
+     * @return userName : String
+     */
+    public String getName(){
+        try {
+            System.out.println("Please enter your name: ");
+            return input.nextLine();
+        }catch(Exception e){System.out.println("Invalid input"); return getName();}
     }
 
     /**
@@ -37,15 +47,14 @@ public class InputController {
      * @return boolean
      */
     public boolean getYesOrNo() {
-        boolean Valid = false;
-        String choice = "";
-        while (!Valid) {
+        try {
             System.out.println("Would you like to play again? (y or n)");
-            choice = input.nextLine();
+            String choice = input.nextLine();
             if (Objects.equals(choice, "y") || Objects.equals(choice, "n")) {
-                Valid = true;
+                return choice.equals("y");
+            } else {
+                return getYesOrNo();
             }
-        }
-        return choice.equals("y");
+        }catch(Exception e){System.out.println("Invalid Input"); return(getYesOrNo());}
     }
 }

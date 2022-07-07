@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class InputControllerTest {
 
-
     @BeforeEach
     void setUp() {
     }
@@ -23,17 +22,15 @@ class InputControllerTest {
     void getGoodUserChoice() {
         ByteArrayInputStream in = new ByteArrayInputStream("y".getBytes());
         Scanner input = new Scanner(in);
-        boolean Valid = false;
         String choice = "";
-        try {
-            while (choice.length() > 1 || !Valid) {
-                if (choice.length() > 0) System.out.println("Sorry please choose only one letter character");
-                System.out.println("Guess a letter: ");
-                choice = input.nextLine();
-                if (choice.matches("[a-zA-Z]")) Valid = true;
-            }
-        } catch (Exception e) {
-            System.out.println("Error try again: ");
+        System.out.println("Guess a letter: ");
+        choice = input.nextLine();
+        if(choice.length() > 1){
+            System.out.println("Sorry please choose only one letter character");
+        }
+        if(choice.matches("[a-zA-Z]"))         assertEquals("y", choice);
+        else {
+            System.out.println("Please only choose a letter: ");
         }
         assertEquals("y", choice);
     }
@@ -41,20 +38,16 @@ class InputControllerTest {
     void getLongUserChoice() {
         ByteArrayInputStream in = new ByteArrayInputStream("Random".getBytes());
         Scanner input = new Scanner(in);
-        boolean Valid = false;
         String choice = "";
-        try {
-            while (choice.length() > 1 || !Valid) {
-                if (choice.length() > 0) {
-                    System.out.println("Sorry please choose only one letter character");
-                    assertEquals(true, choice.length() > 0);
-                }
-                System.out.println("Guess a letter: ");
-                choice = input.nextLine();
-                if (choice.matches("[a-zA-Z]")) Valid = true;
-            }
-        } catch (Exception e) {
-            System.out.println("Error try again: ");
+        System.out.println("Guess a letter: ");
+        choice = input.nextLine();
+        if(choice.length() > 1){
+            System.out.println("Sorry please choose only one letter character");
+        assertEquals("Random", choice);
+        }
+        if(choice.matches("[a-zA-Z]"));
+        else {
+            System.out.println("Please only choose a letter: ");
         }
     }
 
@@ -91,36 +84,17 @@ class InputControllerTest {
                 Valid = true;
             }
         }
+        assertTrue(true);
     }
     @Test
     void getNo() {
         ByteArrayInputStream in = new ByteArrayInputStream("n".getBytes());
         Scanner input = new Scanner(in);
-        boolean Valid = false;
-        String choice;
-        while (!Valid) {
-            System.out.println("Would you like to play again? (y or n)");
-            choice = input.nextLine();
-            if (Objects.equals(choice, "y") || Objects.equals(choice, "n")) {
-                Valid = true;
-            }
+        String choice = "";
+        System.out.println("Would you like to play again? (y or n)");
+        choice = input.nextLine();
+        if (Objects.equals(choice, "y") || Objects.equals(choice, "n")) {
+            assertEquals("n", choice);
         }
-    }
-    @Test
-    void getOther() {
-        ByteArrayInputStream in = new ByteArrayInputStream("Random".getBytes());
-        Scanner input = new Scanner(in);
-        boolean Valid = false;
-        String choice;
-        while (!Valid) {
-            System.out.println("Would you like to play again? (y or n)");
-            choice = input.nextLine();
-            if (Objects.equals(choice, "y") || Objects.equals(choice, "n")) {
-                Valid = true;
-            }
-            else   assertFalse(false);
-            break;
-        }
-
     }
 }
