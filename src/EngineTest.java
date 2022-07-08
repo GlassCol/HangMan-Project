@@ -17,13 +17,14 @@ class EngineTest {
     @Test
     void isGameEndReturnsTrue() {
         Engine engine = new Engine();
-        engine.guessCount = 4;
+        engine.wrongGuesses.add("z");engine.wrongGuesses.add("x");engine.wrongGuesses.add("c");
+        engine.wrongGuesses.add("v");
         assertEquals(true,engine.isGameEnd());
     }
     @Test
     void isGameEndReturnsFalse() {
         Engine engine = new Engine();
-        engine.guessCount = 3;
+        engine.wrongGuesses.add("z");engine.wrongGuesses.add("x");engine.wrongGuesses.add("c");
         assertEquals(false,engine.isGameEnd());
     }
     @Test
@@ -34,7 +35,7 @@ class EngineTest {
     @Test
     void notHighScoreTest(){
         Engine engine = new Engine();
-        engine.guessCount = 2;
+        engine.wrongGuesses.add("z");engine.wrongGuesses.add("x");engine.wrongGuesses.add("c");
         assertEquals(false, engine.checkHighScore());
     }
     @Test
